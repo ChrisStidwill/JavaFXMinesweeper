@@ -1,6 +1,7 @@
 package com.example.minesweepergui;
 
 import javafx.scene.control.Button;
+import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
@@ -38,6 +39,7 @@ public class Grid{
     }
 
     public void ButtonClicked(int row, int col){
+        System.out.println("That tile's display value is " + GridRows[row][col].GetDisplay());
         if (bGameWonOrLost) return;
         if (bFlag){
             PlaceFlagAt(row, col);
@@ -249,12 +251,26 @@ public class Grid{
         for (int rows = 0; rows < Buttons.length; rows++) {
             for (int cols = 0; cols < Buttons[0].length; cols++) {
                 Buttons[cols][rows].setText(GridRows[rows][cols].GetDisplay());
-                if (GridRows[rows][cols].GetDisplay() == " - ") Buttons[cols][rows].setTextFill(Color.BLACK);
-                else if (GridRows[rows][cols].GetDisplay() == " B ") Buttons[cols][rows].setTextFill(Color.RED);
-                else if (GridRows[rows][cols].GetDisplay() == " P ") Buttons[cols][rows].setTextFill(Color.BLACK);
-                else if (GridRows[rows][cols].GetDisplay() == " 1 ") Buttons[cols][rows].setTextFill(Color.LIGHTBLUE);
-                else if (GridRows[rows][cols].GetDisplay() == " 2 ") Buttons[cols][rows].setTextFill(Color.LIGHTGREEN);
-                else if (GridRows[rows][cols].GetDisplay() == " 3 ") Buttons[cols][rows].setTextFill(Color.ORANGE);
+                if (GridRows[rows][cols].GetDisplay() == " - "){
+                    Buttons[cols][rows].setTextFill(Color.BLACK);
+                    Buttons[cols][rows].setBackground(Background.fill(Color.LIGHTSTEELBLUE));
+                }
+                else{
+                    Buttons[cols][rows].setBackground(Background.fill(Color.WHITESMOKE));
+                }
+                if (GridRows[rows][cols].GetDisplay() == " B ") Buttons[cols][rows].setTextFill(Color.RED);
+                if (GridRows[rows][cols].GetDisplay() == " P "){
+                    Buttons[cols][rows].setTextFill(Color.BLACK);
+                    Buttons[cols][rows].setBackground(Background.fill(Color.LIGHTSLATEGRAY));
+                }
+                if (GridRows[rows][cols].GetDisplay().equals(" 1 ")) Buttons[cols][rows].setTextFill(Color.BLUE);
+                if (GridRows[rows][cols].GetDisplay().equals(" 2 ")) Buttons[cols][rows].setTextFill(Color.GREEN);
+                if (GridRows[rows][cols].GetDisplay().equals(" 3 ")) Buttons[cols][rows].setTextFill(Color.DARKORANGE);
+                if (GridRows[rows][cols].GetDisplay().equals(" 4 ")) Buttons[cols][rows].setTextFill(Color.PURPLE);
+                if (GridRows[rows][cols].GetDisplay() == "   "){
+                    Buttons[cols][rows].setTextFill(Color.BLACK);
+                    Buttons[cols][rows].setBackground(Background.fill(Color.WHITESMOKE));
+                }
 //                // This line for debugging purposes only.
 //                Buttons[cols][rows].setText("r" + Integer.toString(rows) + " c" + Integer.toString(cols));
             }
@@ -380,8 +396,16 @@ public class Grid{
         if (CurrentTile.GetDisplay() == CurrentTile.GetActual()) return;
         remainingTilesToSelect--;
         CurrentTile.SetDisplay(CurrentTile.GetActual());
-        if (r > 0) RevealAdjacentBlankTiles(r-1,c);
-        if (r < (GridRows.length - 1)) RevealAdjacentBlankTiles(r+1,c);
+        if (r > 0){
+            RevealAdjacentBlankTiles(r-1,c);
+            if (c > 0) RevealAdjacentBlankTiles(r-1, c-1);
+            if (c < (GridRows[0].length - 1)) RevealAdjacentBlankTiles(r-1, c+1);
+        }
+        if (r < (GridRows.length - 1)){
+            RevealAdjacentBlankTiles(r+1,c);
+            if (c > 0) RevealAdjacentBlankTiles(r+1, c-1);
+            if (c < (GridRows[0].length - 1)) RevealAdjacentBlankTiles(r+1, c+1);
+        }
         if (c > 0) RevealAdjacentBlankTiles(r, c-1);
         if (c < (GridRows[0].length - 1)) RevealAdjacentBlankTiles(r, c+1);
     }

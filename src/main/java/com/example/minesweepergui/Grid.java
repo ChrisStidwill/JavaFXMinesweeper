@@ -39,21 +39,29 @@ public class Grid{
     }
 
     public void ButtonClicked(int row, int col){
-        System.out.println("That tile's display value is " + GridRows[row][col].GetDisplay());
+        // Do nothing if game is over
         if (bGameWonOrLost) return;
+
+        // If flag is set, follow flag logic and early return.
         if (bFlag){
             PlaceFlagAt(row, col);
             PrintGrid();
             GameplayLoop();
             return;
         }
+
+        // Update the tile and store it as an integer enum
+        // (This is functioning like an enum where different integers lead to different functions).
         int outcome = MakeTileSelection(row, col);
         PrintGrid();
 
+        // Outcome of 0: when the tile has already been revealed.
         if (outcome == 0){
             System.out.println("\n That tile has already been revealed.");
             GameplayLoop();
         }
+
+        // Outcome of 2: bomb selected, end the game.
         if (outcome == 2){
             System.out.println("\n Game lost!");
             for (int i = 0; i < GridRows.length; i++){
@@ -66,6 +74,8 @@ public class Grid{
             bGameWonOrLost = true;
         }
 
+        // Assumed that the outcome is now 1 (valid tile selection).
+        // If game has been won, console log message and block inputs.
         if(GetHasWon()){
             System.out.println("\n Game won!");
             bGameWonOrLost = true;
@@ -275,6 +285,7 @@ public class Grid{
 //                Buttons[cols][rows].setText("r" + Integer.toString(rows) + " c" + Integer.toString(cols));
             }
         }
+
         if (bGameWonOrLost) return;
         if (!bHasLaunchedJavaFX){
             bHasLaunchedJavaFX = true;

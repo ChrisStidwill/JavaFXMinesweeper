@@ -74,7 +74,7 @@ public class MinesweeperGUI extends Application {
         return true;
     }
     public static Grid StartGame(){
-        // Get Rows and Cols
+        // Get Rows and Cols from player input on console.
         System.out.println("New game: Setup");
         System.out.println("Which size grid would you like? Enter a number below to select.");
         System.out.println("0. Small (5x5) \n1. Medium (8x8) \n2. Large (12x12) \n3. Custom");
@@ -126,6 +126,8 @@ public class MinesweeperGUI extends Application {
         OutGrid.SetRemainingTiles();
         OutGrid.PrintGrid();
         OutGrid.setButtons(ButtonArray);
+
+        //On to the gameplay loop.
         OutGrid.GameplayLoop();
 
         return OutGrid;
@@ -151,7 +153,9 @@ public class MinesweeperGUI extends Application {
                     return switchOnGridSize(selection);
                 }
                 int rowsOut = Integer.valueOf(rows);
+                if (rowsOut < 0) rowsOut = rowsOut*(-1);
                 int colsOut = Integer.valueOf(cols);
+                if (colsOut < 0) colsOut = colsOut*(-1);
                 return new int[] {rowsOut, colsOut};
             default:
                 System.out.println("Input error. Type a number only (e.g. type 0, 1, 2, or 3)");
@@ -163,10 +167,10 @@ public class MinesweeperGUI extends Application {
 
     public static double switchOnMineDensity(int selection){
         switch(selection){
-            case 0: return 0.05;
-            case 1: return 0.07;
-            case 2: return 0.1;
-            case 3: return 0.2;
+            case 0: return 0.07;
+            case 1: return 0.1;
+            case 2: return 0.15;
+            case 3: return 0.28;
             default:
                 System.out.println("Input error. Type a number only (e.g. type 0, 1, 2, or 3)");
                 Scanner errorScanner = new Scanner (System.in);
